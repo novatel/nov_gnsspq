@@ -141,7 +141,7 @@ class _ProgressThrottle:
             min_interval: Minimum seconds between ``ready()`` returning True.
         """
         self._min_interval = min_interval
-        self._last = 0.0
+        self._last: float | None = None
 
     def ready(self) -> bool:
         """Return True at most once per ``min_interval``; resets the timer.
@@ -150,7 +150,7 @@ class _ProgressThrottle:
             True if at least ``min_interval`` has elapsed since the last True.
         """
         now = time.monotonic()
-        if now - self._last >= self._min_interval:
+        if self._last is None or now - self._last >= self._min_interval:
             self._last = now
             return True
         return False
