@@ -35,10 +35,10 @@ from nov_gnsspq.cli.convert import main, run_convert
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 # The committed sample recording. NOV_GNSSPQ_TEST_GPS overrides it, matching
-# test/integration/ and test/writer/test_progress.py.
+# tests/integration/ and tests/writer/test_progress.py.
 _SAMPLE_GPS = Path(os.environ.get(
     "NOV_GNSSPQ_TEST_GPS",
-    str(_REPO_ROOT / "test" / "resources" / "sample.GPS"),
+    str(_REPO_ROOT / "tests" / "resources" / "sample.GPS"),
 ))
 
 

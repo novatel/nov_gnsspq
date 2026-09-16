@@ -38,7 +38,7 @@ from nov_gnsspq.writer.parallel.edie import (
     _flush_worker,
     _write_row_group,
 )
-from test.utils import resource
+from tests.utils import resource
 from nov_gnsspq.writer.parallel.engine import _auto_tune
 
 
