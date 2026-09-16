@@ -2,9 +2,12 @@ name: Release
 
 # Builds and publishes a release to PyPI.
 #
-# Normally fired by the v<version> tag that main.yml pushes. workflow_dispatch
-# is the manual escape hatch, needed when the tag was pushed by the default
-# GITHUB_TOKEN, since a token-pushed tag does not start a workflow run.
+# Manual only: start it from the Actions tab, or with
+# `gh workflow run release.yml --ref v<version>`. Run it from the v<version>
+# tag that main.yml pushes, so that the packaged version is checked against the
+# tag and a GitHub release is created. Run it from a branch instead and it
+# builds and publishes whatever version pyproject.toml carries, with neither of
+# those two steps.
 #
 # Publishing uses PyPI trusted publishing over OIDC, so no API token is stored
 # in this repository. Because nov-gnsspq does not yet exist on PyPI, a pending
@@ -12,9 +15,6 @@ name: Release
 # workflow release.yml, environment pypi.
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
 
 permissions:

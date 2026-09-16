@@ -59,13 +59,13 @@ jobs:
       - name: Install project and test dependencies
         run: poetry install --with test --all-extras
 
-      # Integration tests run against the committed test/resources/sample.GPS.
+      # Integration tests run against the committed tests/resources/sample.GPS.
       # One parallel-writer assertion still skips, because ParallelGPSWriter
       # delegates to the single-threaded writer below 50 MB. Set
       # NOV_GNSSPQ_TEST_GPS to a larger recording to exercise that path.
       - name: Run pytest
         run: >
-          poetry run pytest test/
+          poetry run pytest tests/
           --cov --cov-config=.coveragerc
           --junitxml=unit-test-report.xml
           --import-mode importlib

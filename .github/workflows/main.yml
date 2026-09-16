@@ -1,11 +1,15 @@
 name: Main
 
-# Runs on every merge to main: re-verifies the merge result, then decides the
-# release from the merged pull request's labels.
+# Runs on every merge to main: re-verifies the merge result, then bumps the
+# version and pushes the matching v<version> tag, based on the merged pull
+# request's labels.
 #
-# Label one of major / minor / patch on a pull request to release on merge.
+# Label one of major / minor / patch on a pull request to tag it on merge.
 # A pull request labelled none, or carrying no bump label at all, is merged
-# without cutting a release.
+# without a bump.
+#
+# Publishing to PyPI is a separate manual step: once the tag exists, run the
+# Release workflow from it.
 #
 # The bump commit is written with [skip ci] in its message so that pushing it
 # back to main does not re-enter this workflow.
@@ -47,10 +51,8 @@ jobs:
 
     steps:
       # RELEASE_TOKEN is a personal access token or GitHub App token with
-      # contents:write. It is needed for two reasons: a push to a protected main
-      # by the default GITHUB_TOKEN is rejected, and a tag pushed by the default
-      # GITHUB_TOKEN does not trigger release.yml. Without it the tag is still
-      # created and Release can be started manually from the Actions tab.
+      # contents:write, needed because a push to a protected main by the
+      # default GITHUB_TOKEN is rejected.
       - name: Check out repository
         uses: actions/checkout@v4
         with:
@@ -111,8 +113,11 @@ jobs:
         run: |
           level='${{ steps.level.outputs.level }}'
           if [ "$level" = none ]; then
-            echo 'No bump label found; no release cut.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'No bump label found; no version bump.' >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Bumped **$level** and pushed tag \`$(git describe --tags --abbrev=0)\`." \
+            tag=$(git describe --tags --abbrev=0)
+            echo "Bumped **$level** and pushed tag \`$tag\`." \
+              >> "$GITHUB_STEP_SUMMARY"
+            echo "Run the Release workflow from \`$tag\` to publish to PyPI." \
               >> "$GITHUB_STEP_SUMMARY"
           fi

@@ -57,6 +57,15 @@ optional = true
 [tool.poetry.group.lint.dependencies]
 pylint = "*"
 
+# Worker processes in tests/writer/test_parallel_file_engine.py are started
+# with spawn on Windows, which pickles the stub splitter and processor by
+# reference and re-imports their module in the child. pythonpath puts the
+# repository root on sys.path so that import resolves tests.writer.*; the
+# parent's sys.path is what a spawned child inherits.
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
 # Drives the version-bump job in .github/workflows/main.yml. The regex is
 # anchored to the start of a line so that it matches the [project] version and
 # not a dependency pin such as matplotlib's version = "3.9.0".

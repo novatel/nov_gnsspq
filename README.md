@@ -379,7 +379,7 @@ enable_plugins()
 import nov_gnsspq
 ```
 
-[`test/compat/test_plugins.py`](test/compat/test_plugins.py) asserts this
+[`tests/compat/test_plugins.py`](tests/compat/test_plugins.py) asserts this
 behaviour, including that no metadata is read while discovery is opted out.
 
 ## License
