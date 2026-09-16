@@ -1,0 +1,40 @@
+# Byte-compiled / cache
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Packaging / build
+*.egg-info/
+build/
+dist/
+
+# Environments
+venv/
+.venv/
+.tox/
+
+# Coverage and test reports
+.coverage
+.coverage.*
+htmlcov/
+unit-test-report.xml
+
+# Editors
+*.vscode/
+*.code-workspace
+.idea/
+
+# Logs
+*.log
+
+
+
+# Default outputs of `gnsspq reconstruct` when run from the repo root
+# (reconstruct/__init__.py defaults both to Path.cwd()).
+/reconstructed.GPS
+/reconstruction_report.html
+
+# Windows/Cygwin crash dumps
+*.stackdump

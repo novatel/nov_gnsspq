@@ -1,0 +1,80 @@
+name: Test
+
+# Reusable test matrix. Called by pull-request.yml and main.yml.
+#
+# Runner choice is deliberately limited: novatel_edie publishes no macOS wheels
+# and no source distribution, so a macOS runner cannot resolve this project's
+# dependencies at all. Linux x86_64 and Windows AMD64 are the platforms the
+# dependency actually ships.
+
+on:
+  workflow_call:
+    inputs:
+      python-versions:
+        description: JSON array of Python versions to test against.
+        type: string
+        default: '["3.11", "3.12", "3.13"]'
+      runners:
+        description: JSON array of runner images.
+        type: string
+        default: '["ubuntu-latest", "windows-latest"]'
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    name: pytest (py${{ matrix.python }}, ${{ matrix.runner }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ${{ fromJSON(inputs.python-versions) }}
+        runner: ${{ fromJSON(inputs.runners) }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Cache Poetry artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/AppData/Local/pypoetry/Cache
+          key: poetry-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('poetry.lock', 'pyproject.toml') }}
+          restore-keys: |
+            poetry-${{ runner.os }}-py${{ matrix.python }}-
+
+      # --all-extras installs the `plot` extra (matplotlib/plotly/contextily).
+      # Without it, tests that import matplotlib fail instead of skipping.
+      - name: Install project and test dependencies
+        run: poetry install --with test --all-extras
+
+      # Integration tests run against the committed test/resources/sample.GPS.
+      # One parallel-writer assertion still skips, because ParallelGPSWriter
+      # delegates to the single-threaded writer below 50 MB. Set
+      # NOV_GNSSPQ_TEST_GPS to a larger recording to exercise that path.
+      - name: Run pytest
+        run: >
+          poetry run pytest test/
+          --cov --cov-config=.coveragerc
+          --junitxml=unit-test-report.xml
+          --import-mode importlib
+          -vv
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-py${{ matrix.python }}-${{ matrix.runner }}
+          path: unit-test-report.xml
+          if-no-files-found: warn

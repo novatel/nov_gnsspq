@@ -1,0 +1,11 @@
+[paths]
+source =
+    nov_gnsspq
+    */site-packages/nov_gnsspq
+
+[run]
+source =
+    nov_gnsspq
+omit =
+    */version.py
+    .tox/*

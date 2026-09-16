@@ -1,0 +1,76 @@
+[project]
+name = "nov_gnsspq"
+version = "1.0.0"
+description = "Convert NovAtel GNSS logs to Parquet and query them."
+authors = [
+    {name = "Matthew Cann", email = "matthew.cann@hexagon.com"},
+    {name = "Riley Kinahan", email = "riley.kinahan@hexagon.com"}
+]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11,<4"
+dynamic = [ "dependencies",]
+
+[project.optional-dependencies]
+plot = [
+    # Not pinned exactly: matplotlib 3.9.0 publishes no cp313 wheel, so an
+    # exact pin forces a source build on the 3.13 CI legs.
+    "matplotlib>=3.9.2,<4",
+    "plotly>=6.1.1,<7",
+    "contextily>=1.6.0,<2",
+]
+
+[project.scripts]
+gnsspq = "nov_gnsspq.cli:main"
+
+
+[tool.poetry]
+packages = [
+    {include = "nov_gnsspq"},
+]
+
+[tool.poetry.dependencies]
+novatel_edie = ">=2.10,<3"
+python = ">=3.11,<4"
+pandas = "^2.2.3"
+fastparquet = "^2024.5.0"
+pyarrow = "^23.0.1"
+tqdm = "^4.66.6"
+pydantic = "^2.10.4"
+tabulate = "^0.9.0"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+
+[build-system]
+requires = [ "poetry-core>=2.0.0",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.lint]
+optional = true
+
+[tool.poetry.group.lint.dependencies]
+pylint = "*"
+
+# Drives the version-bump job in .github/workflows/main.yml. The regex is
+# anchored to the start of a line so that it matches the [project] version and
+# not a dependency pin such as matplotlib's version = "3.9.0".
+[tool.bumpversion]
+current_version = "1.0.0"
+allow_dirty = false
+commit = true
+message = "chore: bump version {current_version} -> {new_version} [skip ci]"
+tag = true
+tag_name = "v{new_version}"
+tag_message = "Release v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+regex = true
+search = '(?m)^version = "{current_version}"$'
+replace = 'version = "{new_version}"'

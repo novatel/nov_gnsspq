@@ -1,0 +1,118 @@
+name: Main
+
+# Runs on every merge to main: re-verifies the merge result, then decides the
+# release from the merged pull request's labels.
+#
+# Label one of major / minor / patch on a pull request to release on merge.
+# A pull request labelled none, or carrying no bump label at all, is merged
+# without cutting a release.
+#
+# The bump commit is written with [skip ci] in its message so that pushing it
+# back to main does not re-enter this workflow.
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'doc/**'
+      - 'examples/**'
+      - 'LICENSE'
+      - '.gitignore'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  test:
+    uses: ./.github/workflows/test.yml
+
+  version-bump:
+    name: Bump version and tag
+    needs:
+      - lint
+      - test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      # RELEASE_TOKEN is a personal access token or GitHub App token with
+      # contents:write. It is needed for two reasons: a push to a protected main
+      # by the default GITHUB_TOKEN is rejected, and a tag pushed by the default
+      # GITHUB_TOKEN does not trigger release.yml. Without it the tag is still
+      # created and Release can be started manually from the Actions tab.
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Resolve bump level from merged pull request labels
+        id: level
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          labels=$(gh api \
+            "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" \
+            --jq '.[0].labels[].name' || true)
+
+          echo "Labels on the associated pull request: ${labels:-<none>}"
+
+          level=none
+          for candidate in major minor patch; do
+            if grep -qx "$candidate" <<<"$labels"; then
+              level=$candidate
+              break
+            fi
+          done
+
+          echo "level=$level" >> "$GITHUB_OUTPUT"
+          echo "Resolved bump level: $level"
+
+      - name: Set up Python
+        if: steps.level.outputs.level != 'none'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bump-my-version
+        if: steps.level.outputs.level != 'none'
+        run: pipx install bump-my-version
+
+      - name: Configure git identity
+        if: steps.level.outputs.level != 'none'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      # bump-my-version is configured in pyproject.toml to commit the new
+      # version and create the matching v<version> tag.
+      - name: Bump version
+        if: steps.level.outputs.level != 'none'
+        run: bump-my-version bump "${{ steps.level.outputs.level }}" --verbose
+
+      - name: Push commit and tag
+        if: steps.level.outputs.level != 'none'
+        run: git push --follow-tags origin HEAD:main
+
+      - name: Summarise
+        run: |
+          level='${{ steps.level.outputs.level }}'
+          if [ "$level" = none ]; then
+            echo 'No bump label found; no release cut.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Bumped **$level** and pushed tag \`$(git describe --tags --abbrev=0)\`." \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi

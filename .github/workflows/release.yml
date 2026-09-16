@@ -1,0 +1,114 @@
+name: Release
+
+# Builds and publishes a release to PyPI.
+#
+# Normally fired by the v<version> tag that main.yml pushes. workflow_dispatch
+# is the manual escape hatch, needed when the tag was pushed by the default
+# GITHUB_TOKEN, since a token-pushed tag does not start a workflow run.
+#
+# Publishing uses PyPI trusted publishing over OIDC, so no API token is stored
+# in this repository. Because nov-gnsspq does not yet exist on PyPI, a pending
+# publisher must be registered there before the first run: this repository,
+# workflow release.yml, environment pypi.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build distributions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      # nov_gnsspq is pure Python, so this produces one sdist and one universal
+      # wheel. No cibuildwheel matrix is required; that machinery exists in
+      # novatel_edie only because it ships a compiled extension.
+      - name: Build sdist and wheel
+        run: poetry build
+
+      - name: Verify the tag matches the packaged version
+        if: github.ref_type == 'tag'
+        run: |
+          set -euo pipefail
+          packaged=$(poetry version --short)
+          tagged="${GITHUB_REF_NAME#v}"
+          if [ "$packaged" != "$tagged" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match pyproject version $packaged" >&2
+            exit 1
+          fi
+          echo "Tag and packaged version agree: $packaged"
+
+      - name: List distributions
+        run: ls -l dist/
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/nov-gnsspq
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          verbose: true
+
+  github-release:
+    name: Create GitHub release
+    needs: publish
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            dist/*

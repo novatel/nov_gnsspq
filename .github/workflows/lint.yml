@@ -1,0 +1,58 @@
+name: Lint
+
+# Reusable pylint job. Called by pull-request.yml and main.yml.
+#
+# The repository's .pylintrc is used exactly as committed and is never modified
+# by CI; suppressions belong inline in the source, not in the rcfile.
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version used to run pylint.
+        type: string
+        default: '3.12'
+
+permissions:
+  contents: read
+
+jobs:
+  pylint:
+    name: pylint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Cache Poetry artifacts
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-lint-${{ hashFiles('poetry.lock', 'pyproject.toml') }}
+          restore-keys: |
+            poetry-lint-
+
+      # The runtime dependencies are installed alongside the lint group so that
+      # pylint can resolve imports such as novatel_edie and pyarrow.
+      # --all-extras so pylint can resolve matplotlib/plotly/contextily
+      # imports in nov_gnsspq/plot/ rather than reporting import-error.
+      - name: Install project and lint dependencies
+        run: poetry install --with lint --all-extras
+
+      # pylint exits non-zero on any message, so a score threshold is
+      # required for a meaningful gate. Errors (E****) are fixed at
+      # source and must stay that way -- --fail-on=E fails the job on any
+      # error regardless of the score.
+      - name: Run pylint
+        run: >
+          poetry run pylint nov_gnsspq --rcfile=.pylintrc
+          --fail-under=9.0 --fail-on=E

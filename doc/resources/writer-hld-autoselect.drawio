@@ -1,0 +1,113 @@
+<mxfile>
+  <diagram id="diagram_1778087526550588" name="Page-1">
+    <mxGraphModel dx="1768" dy="1051" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="720" pageHeight="1060" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v_size" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;Get file size&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;os.path.getsize(file_path)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="210" x="470" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="v_param" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;parallel value&lt;/b&gt;" vertex="1">
+          <mxGeometry height="115" width="115" x="780" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="v_force_par" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D6B656;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;parallel=True&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;Force ParallelGPSWriter&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="195" x="860" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="v_force_seq" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D6B656;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;parallel=False&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;Force GPSWriter&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="195" x="620" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="v_auto" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;file_size&lt;/b&gt;&lt;br/&gt;≥ 50 MB?" vertex="1">
+          <mxGeometry height="115" width="115" x="255" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="v_sel_par" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFDE7;strokeColor=#D6B656;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;Select&lt;/b&gt;&lt;br/&gt;ParallelGPSWriter" vertex="1">
+          <mxGeometry height="60" width="175" x="90" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="v_sel_seq" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFDE7;strokeColor=#D6B656;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;Select&lt;/b&gt;&lt;br/&gt;GPSWriter" vertex="1">
+          <mxGeometry height="60" width="175" x="340" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="v_tune" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFDE7;strokeColor=#D6B656;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;_auto_tune(file_path)&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;workers · chunk_size · est_messages&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="290" x="170" y="678" as="geometry" />
+        </mxCell>
+        <mxCell id="v_write" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#D5E8D4;strokeColor=#82B366;fontFamily=Arial;strokeWidth=1.5;fontSize=12;fontColor=#000000;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;write_to_db()&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;parse → accumulate → chunk flush → finalize&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="290" x="170" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="a9oAekmvt_DaNxUMdGEo-5" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="v_size" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="v_size" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="a9oAekmvt_DaNxUMdGEo-1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="v_param" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontSize=11;fontColor=#000000;" target="v_force_par" value="True">
+          <mxGeometry relative="1" x="0.0725" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="970" y="453" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="v_param" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontSize=11;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="v_force_seq" value="False">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="a9oAekmvt_DaNxUMdGEo-1" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontSize=11;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="v_auto" value="None (auto)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="v_auto" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontSize=11;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="v_sel_par" value="Yes">
+          <mxGeometry relative="1" x="0.0854" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="v_auto" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontSize=11;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="v_sel_seq" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="v_force_par" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="v_tune" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="958" y="708" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="v_force_seq" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="v_tune" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="718" y="708" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="v_sel_par" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;" target="v_tune" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="v_sel_seq" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;" target="v_tune" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="v_tune" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;" target="v_write" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="v_write" style="html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#323232;strokeWidth=1;fontFamily=Arial;fontColor=#000000;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="a9oAekmvt_DaNxUMdGEo-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a9oAekmvt_DaNxUMdGEo-2" edge="1" parent="1" source="a9oAekmvt_DaNxUMdGEo-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="v_param">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="575" y="370" />
+              <mxPoint x="838" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a9oAekmvt_DaNxUMdGEo-3" connectable="0" parent="a9oAekmvt_DaNxUMdGEo-2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Yes" vertex="1">
+          <mxGeometry relative="1" x="-0.2041" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a9oAekmvt_DaNxUMdGEo-1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontFamily=Arial;strokeWidth=1;fontSize=12;fontColor=#000000;fontStyle=1" value="Is param set?" vertex="1">
+          <mxGeometry height="115" width="115" x="517.5" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="a9oAekmvt_DaNxUMdGEo-4" parent="1" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;" value="Return" vertex="1">
+          <mxGeometry height="26" width="26" x="302" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="a9oAekmvt_DaNxUMdGEo-5" parent="1" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;direction=south;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="560" y="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

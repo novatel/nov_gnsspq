@@ -1,0 +1,77 @@
+<mxfile>
+  <diagram id="uml_class_diagram" name="Page-1">
+    <mxGraphModel dx="1664" dy="989" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pdg_name" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;verticalAlign=middle;strokeWidth=1;fontFamily=Arial;" value="PqConverter" vertex="1">
+          <mxGeometry height="30" width="300" x="260" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pdg_attrs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="- output_dir : Path&#xa;- overwrite : bool = False&#xa;- parallel : bool | None = None&#xa;- _sequence_id : int" vertex="1">
+          <mxGeometry height="93" width="300" x="260" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="pdg_methods" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="+ __enter__()&#xa;+ __exit__(exc_type, exc_val, exc_tb)&#xa;+ consume(source : Any)&#xa;+ write(record : ne.Message)&#xa;+ write_to_db(source : Any)&#xa;- _run_file_writer(path : Path)&#xa;- _write_record(record : ne.Message)&#xa;- _finalize()" vertex="1">
+          <mxGeometry height="152" width="300" x="260" y="143" as="geometry" />
+        </mxCell>
+        <mxCell id="gpsw_name" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;verticalAlign=middle;strokeWidth=1;fontFamily=Arial;" value="GPSWriter" vertex="1">
+          <mxGeometry height="30" width="225" x="170" y="383" as="geometry" />
+        </mxCell>
+        <mxCell id="gpsw_attrs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="- file_path : Path&#xa;- chunk_size : int&#xa;- output_dir : Path&#xa;- _flush_queue : Queue" vertex="1">
+          <mxGeometry height="72" width="225" x="170" y="413" as="geometry" />
+        </mxCell>
+        <mxCell id="gpsw_methods" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="+ write_to_db(path : Path)&#xa;- _flush_worker()" vertex="1">
+          <mxGeometry height="40" width="225" x="170" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="para_name" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;verticalAlign=middle;strokeWidth=1;fontFamily=Arial;" value="ParallelGPSWriter" vertex="1">
+          <mxGeometry height="30" width="235" x="440" y="383" as="geometry" />
+        </mxCell>
+        <mxCell id="para_attrs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="- file_path : Path&#xa;- chunk_size : int&#xa;- output_dir : Path&#xa;- workers : int" vertex="1">
+          <mxGeometry height="72" width="235" x="440" y="413" as="geometry" />
+        </mxCell>
+        <mxCell id="para_methods" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="+ write_to_db(path : Path)&#xa;- _merge_tree(results : list)&#xa;- _merge_log_table(results : list)" vertex="1">
+          <mxGeometry height="55" width="235" x="440" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="tn_name" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;verticalAlign=middle;strokeWidth=1;fontFamily=Arial;" value="TableNode «__slots__»" vertex="1">
+          <mxGeometry height="30" width="225" x="630" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="tn_attrs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="+ cols : dict[str, list]&#xa;+ row_count : int&#xa;+ last_seq_id : int&#xa;+ last_parent_id : int&#xa;+ children : dict[str, TableNode]&#xa;+ writer : pq.ParquetWriter | None" vertex="1">
+          <mxGeometry height="112" width="225" x="630" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="tn_note" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=center;verticalAlign=middle;fontStyle=2;fontSize=10;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="«managed by _w_* module functions»" vertex="1">
+          <mxGeometry height="26" width="225" x="630" y="732" as="geometry" />
+        </mxCell>
+        <mxCell id="eng_name" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;verticalAlign=middle;strokeWidth=1;fontFamily=Arial;" value="«module»   _engine.py" vertex="1">
+          <mxGeometry height="30" width="285" x="267.5" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="eng_fns" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;align=left;verticalAlign=top;spacingLeft=6;spacingTop=5;fontSize=11;strokeWidth=1;fontColor=#000000;fontFamily=Arial;" value="_w_add_entry(node, msg, seq_id, parent_id)&lt;br&gt;_w_flush_node(node, writer)&lt;br&gt;_w_maybe_flush_subtree(node, chunk_size)&lt;br&gt;_w_close_all_writers(nodes)&lt;br&gt;_worker_process(byte_range, output_dir)&lt;br&gt;_auto_tune(file_bytes, cpu_count)&lt;br&gt;_find_message_boundary(fp, offset)&lt;br&gt;_merge_tree(results, output_dir)&lt;br&gt;_merge_log_table(results, output_dir)" vertex="1">
+          <mxGeometry height="158" width="285" x="267.5" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="pdg_methods" style="html=1;edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;fontSize=10;strokeWidth=1;fontFamily=Arial;fontColor=#000000;rounded=0;" target="gpsw_name" value="«creates»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="pdg_methods" style="html=1;edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;fontSize=10;strokeWidth=1;fontFamily=Arial;fontColor=#000000;rounded=0;" target="para_name" value="«creates»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="gpsw_methods" style="html=1;edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;fontSize=10;strokeWidth=1;fontFamily=Arial;fontColor=#000000;rounded=0;" target="eng_name" value="«uses»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="283" y="560" />
+              <mxPoint x="410" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="para_methods" style="html=1;edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;fontSize=10;strokeWidth=1;fontFamily=Arial;fontColor=#000000;rounded=0;" target="eng_name" value="«uses»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="557" y="560" />
+              <mxPoint x="410" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="eng_name" style="html=1;edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;fontSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;fontFamily=Arial;fontColor=#000000;rounded=0;" target="tn_name" value="manages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

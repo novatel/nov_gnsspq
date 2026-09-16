@@ -1,0 +1,33 @@
+name: Pull Request
+
+# Quality gate for every proposed change, including pull requests from forks.
+#
+# Only pull_request is used as a trigger, not push. Triggering on both would run
+# the whole matrix twice for any branch in this repository that has a pull
+# request open against it.
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'doc/**'
+      - 'examples/**'
+      - 'LICENSE'
+      - '.gitignore'
+
+permissions:
+  contents: read
+
+# A new push to a pull request cancels the superseded run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  test:
+    uses: ./.github/workflows/test.yml

@@ -1,0 +1,25 @@
+[MAIN]
+jobs=0
+persistent=no
+load-plugins=pylint.extensions.mccabe
+ignore=CVS
+ignore-patterns=^\.#
+ignore-paths=^\.tox/.*,^\.venv/.*,^.*/__pycache__/.*,^dist/.*,^build/.*,^\.pytest_cache/.*,^\.mypy_cache/.*,^\.ruff_cache/.*
+
+[MESSAGES CONTROL]
+disable=raw-checker-failed,
+        bad-inline-option,
+        locally-disabled,
+        file-ignored,
+        suppressed-message,
+        useless-suppression,
+        deprecated-pragma,
+        use-symbolic-message-instead
+
+[REPORTS]
+reports=no
+score=yes
+
+[FORMAT]
+max-line-length=100
+ignore-long-lines=^\s*(# )?<?https?://\S+>?$
