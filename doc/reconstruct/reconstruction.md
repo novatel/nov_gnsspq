@@ -1,4 +1,7 @@
-# nov_gnsspq Reconstruction & Verification
+# nov_gnsspq Reconstruction & Verification (experimental)
+
+> **Experimental.** The CLI flags, the Python API, and the report output may
+> change between releases.
 
 The `gnsspq reconstruct` command reads a nov_gnsspq Parquet database, rebuilds a complete GPS log file from it, and compares the rebuilt file against the original recording to prove that the conversion introduced no data loss.
 

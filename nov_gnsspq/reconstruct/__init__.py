@@ -23,6 +23,9 @@ IMPLIED, AS MORE FULLY SET FORTH IN THE LICENSE FILE.
 ################################################################################
 
 Package initialization for nov_gnsspq.reconstruct.
+
+Experimental: function signatures, result types, and report output may
+change between releases.
 """
 from __future__ import annotations
 

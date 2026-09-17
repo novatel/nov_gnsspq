@@ -57,7 +57,8 @@ def main(argv: list[str] | None = None):
         prog="nov_gnsspq reconstruct",
         description=(
             "Reconstruct a GPS file from a nov_gnsspq database and verify "
-            "data integrity."
+            "data integrity. EXPERIMENTAL: flags and output may change "
+            "between releases."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(

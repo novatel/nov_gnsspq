@@ -304,7 +304,7 @@ Each plot function accepts the `PqReader` instance and renders the figure.
 Interactive variants return Plotly `Figure` objects you can further customise or
 export.
 
-## Reconstruction and Verification
+## Reconstruction and Verification (experimental)
 
 `gnsspq reconstruct` proves that the Parquet database is a lossless
 representation of the original recording by reconstructing a GPS file from the
