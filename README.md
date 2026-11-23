@@ -5,12 +5,7 @@ querying.**
 
 ## Overview
 
-`nov_gnsspq` converts NovAtel `.GPS` recordings into structured Apache Parquet (
-columnar) databases. The source format, NovAtel's log protocol, is parsed
-using `novatel_edie`, NovAtel's binary decoding library.
-The decoded messages are stored as Parquet files via PyArrow and pandas, which
-makes downstream queries orders of magnitude faster than re-parsing the binary
-on every access.
+Test123
 
 The database layout mirrors the log-type hierarchy of the recording. Each log
 type (e.g., `BESTPOS`, `RANGE`) gets its own subdirectory and Parquet file.
